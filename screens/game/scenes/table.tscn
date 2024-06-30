@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://cb63om8jibu4m"]
+
+[ext_resource type="Script" path="res://screens/game/scenes/table.gd" id="1_8nmyw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xia6t"]
+margin = 1.0
+size = Vector3(1.68066, 1.1, 3.30566)
+
+[sub_resource type="Animation" id="Animation_52lco"]
+resource_name = "clicked"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.25, 1),
+"update": 0,
+"values": [Vector3(1.1, 1.3, 1.1), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_e1nrs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6nmoc"]
+_data = {
+"RESET": SubResource("Animation_e1nrs"),
+"clicked": SubResource("Animation_52lco")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chfeo"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2ubh2"]
+material = SubResource("StandardMaterial3D_chfeo")
+size = Vector3(2, 1, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gqm6d"]
+material = SubResource("StandardMaterial3D_chfeo")
+size = Vector3(2, 0.5, 0.5)
+
+[node name="Table" type="StaticBody3D"]
+script = ExtResource("1_8nmyw")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.415, 0)
+radius = 1.0
+height = 2.0
+vertices = PackedVector3Array(2.3, 0, 1, -0.3, 0, 1, -0.3, 0, -2.4, 2.3, 0, -2.4)
+use_3d_avoidance = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.35, -0.8)
+shape = SubResource("BoxShape3D_xia6t")
+
+[node name="position" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -0.7)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6nmoc")
+}
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -0.775)
+
+[node name="table" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.025)
+mesh = SubResource("BoxMesh_2ubh2")
+skeleton = NodePath("../../../..")
+
+[node name="seats" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.239317, 1.325)
+mesh = SubResource("BoxMesh_gqm6d")
+skeleton = NodePath("../../../..")
+
+[node name="seats2" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.239317, -1.275)
+mesh = SubResource("BoxMesh_gqm6d")
+skeleton = NodePath("../../../..")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

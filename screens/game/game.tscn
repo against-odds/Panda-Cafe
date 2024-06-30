@@ -1,0 +1,194 @@
+[gd_scene load_steps=22 format=3 uid="uid://koloq3la27ub"]
+
+[ext_resource type="Script" path="res://screens/game/game.gd" id="1_evt2f"]
+[ext_resource type="Script" path="res://screens/game/CameraPanner.gd" id="1_w0k53"]
+[ext_resource type="PackedScene" uid="uid://cb63om8jibu4m" path="res://screens/game/scenes/table.tscn" id="2_m8g6s"]
+[ext_resource type="Texture2D" uid="uid://d3kkep44tq6y8" path="res://images/idle.png" id="2_pmsgd"]
+[ext_resource type="Texture2D" uid="uid://c8ogghecdbkd" path="res://images/walk2.png" id="3_ccri7"]
+[ext_resource type="Texture2D" uid="uid://bg6dayc7ul0bd" path="res://images/walk1.png" id="4_fw5lc"]
+[ext_resource type="Script" path="res://screens/game/Player.gd" id="4_sg25o"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hjkgg"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ut8jw"]
+sky_material = SubResource("ProceduralSkyMaterial_hjkgg")
+
+[sub_resource type="Environment" id="Environment_5eily"]
+background_mode = 1
+background_color = Color(0.119868, 0.119831, 0.0488429, 1)
+sky = SubResource("Sky_ut8jw")
+reflected_light_source = 1
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o44v4"]
+albedo_color = Color(0.949861, 0.89036, 0.911509, 1)
+roughness = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_k4ntp"]
+material = SubResource("StandardMaterial3D_o44v4")
+size = Vector3(16, 1, 16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_35ec1"]
+albedo_color = Color(0.950911, 0.927287, 0.886773, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_h5tqv"]
+material = SubResource("StandardMaterial3D_35ec1")
+size = Vector3(17, 8, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chfeo"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0owji"]
+material = SubResource("StandardMaterial3D_chfeo")
+size = Vector3(1, 1, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nwwuq"]
+material = SubResource("StandardMaterial3D_chfeo")
+size = Vector3(4, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_a8a3g"]
+material = SubResource("StandardMaterial3D_chfeo")
+size = Vector3(1, 2, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1h86d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_pmsgd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ccri7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fw5lc")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 4.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jrjkx"]
+height = 2.4
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_jqstf"]
+vertices = PackedVector3Array(-7.50241, 7.49655, -8.50382, 8.49759, 7.49655, -8.00382, 8.49759, 7.49655, -8.50382, 7.49759, 0.496545, 7.49618, 7.49759, 0.496545, 1.74618, 3.49759, 0.496545, 1.49618, -7.50241, 0.496545, 7.49618, -7.50241, 0.496545, -7.25382, -7.50241, 0.496545, 7.49618, 3.49759, 0.496545, 1.49618, 3.49759, 0.496545, -7.25382, 4.49759, 4.49655, -7.25382, 4.49759, 4.49655, 0.746177, 7.49759, 4.49655, 0.746177, 7.49759, 4.49655, -7.25382, 4.74759, 0.496545, 0.496177, 7.49759, 0.496545, 0.496177, 7.24759, 0.496545, -7.25382, 4.74759, 0.496545, -7.25382)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Array(5, 3, 6), PackedInt32Array(10, 9, 7), PackedInt32Array(7, 9, 8), PackedInt32Array(14, 13, 11), PackedInt32Array(11, 13, 12), PackedInt32Array(18, 17, 15), PackedInt32Array(15, 17, 16)]
+
+[node name="game" type="Node"]
+script = ExtResource("1_evt2f")
+
+[node name="CameraPanner" type="Node3D" parent="."]
+transform = Transform3D(0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.707107, -0.40558, 0.579228, 0, 3, 0)
+script = ExtResource("1_w0k53")
+
+[node name="Camera3D" type="Camera3D" parent="CameraPanner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16)
+projection = 1
+current = true
+size = 15.0
+
+[node name="WorldEnv" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="WorldEnv"]
+environment = SubResource("Environment_5eily")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnv"]
+transform = Transform3D(-0.885437, -0.461723, -0.0530369, 0.308267, -0.498056, -0.810501, 0.347812, -0.733997, 0.583332, 0, 17.6916, 0)
+shadow_opacity = 0.5
+sky_mode = 1
+
+[node name="World" type="Node" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1, -0.000102381, 0.000294691, 0.000102269, 1, 0.000329558, -0.00029473, -0.000329523, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_k4ntp")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="World"]
+transform = Transform3D(-1, 0.000102291, 0.000294696, -0.000102194, -1, 0.000329553, 0.00029473, 0.000329523, 1, 0.5, 3, -8.5)
+mesh = SubResource("BoxMesh_h5tqv")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="World"]
+transform = Transform3D(-0.000294686, -0.000329523, -1, -0.000102194, -1, 0.000329553, -1, 0.000102291, 0.000294652, 8.5, 3, -0.5)
+mesh = SubResource("BoxMesh_h5tqv")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.5, -4)
+mesh = SubResource("BoxMesh_0owji")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, 0.5)
+mesh = SubResource("BoxMesh_nwwuq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 1, -4)
+mesh = SubResource("BoxMesh_a8a3g")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 5, -4)
+mesh = SubResource("BoxMesh_a8a3g")
+skeleton = NodePath("../..")
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 12, -1)
+light_energy = 8.606
+light_specular = 2.528
+shadow_enabled = true
+shadow_opacity = 0.5
+shadow_blur = 2.0
+omni_range = 23.0
+
+[node name="Interactables" type="Node" parent="."]
+
+[node name="Table" parent="Interactables" instance=ExtResource("2_m8g6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+
+[node name="Table2" parent="Interactables" instance=ExtResource("2_m8g6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 1)
+
+[node name="Table3" parent="Interactables" instance=ExtResource("2_m8g6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -4)
+
+[node name="Table4" parent="Interactables" instance=ExtResource("2_m8g6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6)
+
+[node name="Table7" parent="Interactables" instance=ExtResource("2_m8g6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+
+[node name="Table5" parent="Interactables" instance=ExtResource("2_m8g6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1)
+
+[node name="Table6" parent="Interactables" instance=ExtResource("2_m8g6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -4)
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+script = ExtResource("4_sg25o")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="Player"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 1.3, 0)
+billboard = 2
+shaded = true
+sprite_frames = SubResource("SpriteFrames_1h86d")
+frame_progress = 0.463266
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("CapsuleShape3D_jrjkx")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Player"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+visible = false
+navigation_mesh = SubResource("NavigationMesh_jqstf")
